@@ -1,0 +1,18 @@
+function emprestimo($titulo) {
+    for ($i = 0; $i < count($GLOBALS["livros"]); $i++) {
+        $l = $GLOBALS["livros"][$i];
+        if ($l["titulo"] == $titulo) {
+            $GLOBALS["livros"][$i]["quantidade"] = $l["quantidade"] - 1;
+            if ($GLOBALS["livros"][$i]["quantidade"] < 0) {
+                echo "Erro\n"; 
+            }
+        }
+    }
+}
+
+
+add("PHP Básico", "Fulano", 1);
+emprestimo("PHP Básico");
+emprestimo("PHP Básico");
+
+echo "Fim\n"
