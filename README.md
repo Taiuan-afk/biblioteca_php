@@ -4,93 +4,91 @@
 > Mantenha o texto objetivo e cite evidências (arquivo/linha/commit).
 
 1) Identificação
-- Turma/UC: 
-- Professor: Aislan Souza  
-- Integrantes: Taiuan da Silva COsta e Tiago Meyer
+Turma/UC: G91254
+Professor: Aislan da Silva Souza
+Integrantes: Taiuan da Silva Costa / Tiago Meyer Almeida
 
 2) Linguagem e Ambiente
-- Linguagem escolhida: (X) PHP  ( ) JavaScript (Node.js)
-- Versão: PHP `8.4.8` 
-- Como instalar dependências: *(se houver)*  
-  ```bash
-  # Ex.: npm install
-  ```
+Linguagem escolhida: PHP
+Versão: PHP 8.x
+Dependências: Nenhuma.  
 
-3) Como Executar
-PHP
+3) Como Executar  
 
-php php/app.php
-
-Servidor embutido (se tiver interface web)
-php -S localhost:8000
-
-JavaScript (Node)
-
-node js/app.js
-
-
-> Se o seu grupo criou outros arquivos de entrada, documente aqui:
-
-# Exemplo
-php app.php emprestar "PHP Básico"
-node app.js listar
-
+1. Certifique-se de ter o PHP instalado (versão 8.x ou superior).
+   php -v
+2. No terminal, navegue até a pasta do projeto e execute:
+   
+bash
+   php php/app.php
 
 4) Estrutura do Projeto (após refatoração)
 
-/seu-grupo/
-  ├── src/                 # regra de negócio (domínio) – sem I/O
-  ├── app/                 # interface/CLI – captura entrada e imprime saída
-  ├── tests/               # testes (se houver)
-  ├── checklist.xlsx       # checklist preenchido
-  └── README.md            # este arquivo
+/projeto/
+  ├── php/
+  │   ├── app/                  # Interface CLI
+  │   │   └── app.php           # Menu interativo
+  │   ├── src/                  # Regra de negócio
+  │       └── Biblioteca.php    # Lógica principal
+  ├── checklist.xlsx            # Checklist de auditoria
+  └── README.md                 # Este arquivo
 
 > Ajuste os nomes/conteúdo para refletir sua organização real.
 
 5) Principais Melhorias Realizadas (resumo)
-- [ ] Nomenclatura de arquivos/classes/funções corrigida
-- [ ] Documentação adicionada (PHPDoc/JSDoc)
-- [ ] Validações de entrada (vazios, tipos, negativos)
-- [ ] Tratamento de erros com exceções/mensagens claras
-- [ ] Separação de **regra de negócio** e **I/O**
-- [ ] Funções novas: **devolver** e **listarDisponiveis**
-- [ ] (Opcional) Persistência em JSON / Modo CLI / Relatórios
+Nomenclatura: Funções renomeadas para adicionarLivro, emprestarLivro.
+Documentação: Comentários adicionados em métodos (Biblioteca.php).
+Validações: Bloqueio de quantidade <= 0 e tratamento de erros.
+Separação de camadas: Lógica em src/ e interface em app/.
+Novas funcionalidades: listarDisponiveis() e mensagens claras.
 
- 6) Checklist – Evidências por item
+6) Checklist – Evidências por item
 
+       Item       |           Correção                 |               Evidência
+1. Documentação   |   Adicionados comentários          |    Biblioteca.php (linhas 8, 19, 34)
+2. Nomenclatura   |   Classes/variáveis descritivas    |    Biblioteca.php (nome da classe, $titulo)
+4. Loop infinito  |   Condição de saída (case '4')     |    app.php (linha 33)
+5. NullPointer    |   Validações com trim() e exceções |    Biblioteca.php (linhas 10, 23-30)
+8. Exceções       |   Mensagens específicas            |    Biblioteca.php (linhas 25, 29)
 
+7) Antes x Depois (trechos representativos)
 
- 7) Antes x Depois (trechos representativos)
-   > Inclua 2 a 4 exemplos curtos com o que estava errado e como ficou depois.  
-   > Use blocos de código com a sua linguagem.
+Exemplo 1 – Validação de Quantidade
+        // Antes (bugada.php): Permitia quantidade negativa
+        $GLOBALS["livros"][$i]["quantidade"] = $l["quantidade"] - 1;
 
-   Exemplo 1 – Tratamento de erro
+        // Depois (Biblioteca.php, linha 10):
+        if ($quantidade <= 0) throw new Exception("Quantidade deve ser > 0");
 
-    - if (l.quantidade < 0) { console.log("Erro"); }
-    + if (l.quantidade <= 0) { throw new Error("Sem exemplares disponíveis."); }
-  
+Exemplo 2 – Tratamento de Erros
+        // Antes: "Erro" genérico
+        echo "Erro\n";
 
-   Exemplo 2 – Documentação (PHPDoc/JSDoc)
- 
-/**
- * Empresta um exemplar do título informado.
- * @param string $titulo
- * @throws RuntimeException se não houver exemplares
- */
-public function emprestar(string $titulo): void { ... }
+        // Depois: Exceção específica
+        throw new Exception("Não há exemplares disponíveis");
 
+8) Testes Manuais (e/ou automatizados)
 
-   8) Testes Manuais (e/ou automatizados)
--  Casos cobertos: emprestar quando há estoque, emprestar sem estoque, devolver, listar disponíveis, entradas inválidas.
--  Como rodar testes automáticos: (se houver)
-  
-  # Ex.: phpunit / jest / vitest
-  
-- Prints/saídas relevantes:(adicione imagens ou código com saída)
+1.Cadastro inválido:
+Entrada: 1 → "Livro", "Autor", -5
+Saída: ERRO: Quantidade deve ser maior que zero
 
-  9) Limitações conhecidas e Próximos Passos
+2.Empréstimo sem estoque:
+Entrada: 2 → "Livro X" (sem estoque)
+Saída: ERRO: Não há exemplares disponíveis
 
-- (ex.: melhorar mensagens de erro; adicionar logs; criar camadas de repositório)
+3.Listagem:
+Saída: Exibe apenas livros com quantidade > 0.
+
+9) Limitações conhecidas e Próximos Passos
+
+Limitações:
+Dados não persistem após fechar o programa.
+Sem interface gráfica.
+
+Melhorias:
+Adicionar função devolverLivro().
+Salvar dados em arquivo JSON.
 
  10) Créditos
-- Integrantes e principais responsabilidades (opcional).
+Todos integrantes da equipe realizaram tal atividade em conjunto.
